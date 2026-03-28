@@ -1,0 +1,46 @@
+npm error code ERESOLVE
+npm error ERESOLVE could not resolve
+npm error
+npm error While resolving: react-dom@19.2.4
+npm error Found: react@19.2.0
+npm error node_modules/react
+npm error   react@"19.2.0" from the root project
+npm error   peer react@"*" from expo@55.0.9
+npm error   node_modules/expo
+npm error     expo@"~55.0.0" from the root project
+npm error     peer expo@"*" from expo-constants@55.0.9
+npm error     node_modules/expo-constants
+npm error       expo-constants@"~55.0.9" from the root project
+npm error       4 more (expo, expo-linking, expo-router, expo-asset)
+npm error     15 more (expo-font, expo-router, @expo/log-box, expo-web-browser, ...)
+npm error   43 more (react-native, expo-font, expo-linking, expo-router, ...)
+npm error
+npm error Could not resolve dependency:
+npm error peer react@"^19.2.4" from react-dom@19.2.4
+npm error node_modules/react-dom
+npm error   react-dom@"^19.2.0" from the root project
+npm error   peerOptional react-dom@"*" from expo-router@55.0.8
+npm error   node_modules/expo-router
+npm error     expo-router@"~55.0.8" from the root project
+npm error     1 more (@expo/cli)
+npm error   7 more (@expo/metro-runtime, @radix-ui/react-tabs, vaul, ...)
+npm error
+npm error Conflicting peer dependency: react@19.2.4
+npm error node_modules/react
+npm error   peer react@"^19.2.4" from react-dom@19.2.4
+npm error   node_modules/react-dom
+npm error     react-dom@"^19.2.0" from the root project
+npm error     peerOptional react-dom@"*" from expo-router@55.0.8
+npm error     node_modules/expo-router
+npm error       expo-router@"~55.0.8" from the root project
+npm error       1 more (@expo/cli)
+npm error     7 more (@expo/metro-runtime, @radix-ui/react-tabs, vaul, ...)
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /Users/vshahbaz/.npm/_logs/2026-03-28T17_14_54_591Z-eresolve-report.txt
+npm error A complete log of this run can be found in: /Users/vshahbaz/.npm/_logs/2026-03-28T17_14_54_591Z-debug-0.log
