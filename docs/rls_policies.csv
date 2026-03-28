@@ -1,0 +1,242 @@
+schemaname,tablename,policyname,permissive,roles,cmd,qual
+public,admin_announcement_reads,No direct access to admin_announcement_reads,PERMISSIVE,{public},ALL,false
+public,admin_announcements,No direct access to admin_announcements,PERMISSIVE,{public},ALL,false
+public,admin_conversation_messages,No direct access to admin_conversation_messages,PERMISSIVE,{public},ALL,false
+public,admin_conversations,No direct access to admin_conversations,PERMISSIVE,{public},ALL,false
+public,admin_invites,Admins can manage invites,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,admin_invites,Anyone can accept invite with valid token,PERMISSIVE,{public},UPDATE,check_invite_token(token)
+public,admin_invites,Only admins can view invites,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,admin_sessions,No direct access to admin_sessions,PERMISSIVE,{public},ALL,false
+public,admin_users,No direct access to admin_users,PERMISSIVE,{public},ALL,false
+public,badges,Admins can manage badges,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,badges,Anyone can view badges,PERMISSIVE,{public},SELECT,true
+public,challenge_pokes,Participants can send pokes,PERMISSIVE,{public},INSERT,
+public,challenge_pokes,Participants can view pokes,PERMISSIVE,{public},SELECT,((auth.uid() = sender_id) OR (auth.uid() = receiver_id))
+public,challenges,Challenger can delete pending challenges,PERMISSIVE,{public},DELETE,((auth.uid() = challenger_id) AND (status = 'pending'::challenge_status))
+public,challenges,Participants can update their challenges,PERMISSIVE,{public},UPDATE,((auth.uid() = challenger_id) OR (auth.uid() = challenged_id))
+public,challenges,Users can create challenges,PERMISSIVE,{public},INSERT,
+public,challenges,Users can view their own challenges,PERMISSIVE,{public},SELECT,((auth.uid() = challenger_id) OR (auth.uid() = challenged_id))
+public,client_partner_photos,Admins can manage client partner photos,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,client_partner_photos,Anyone can view client partner photos,PERMISSIVE,{public},SELECT,true
+public,client_partners,Admins can manage partners,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM admin_users au
+  WHERE (((au.id)::text = ((current_setting('request.headers'::text, true))::json ->> 'x-admin-id'::text)) AND (au.is_super_admin = true))))"
+public,client_partners,Anyone can view active partners,PERMISSIVE,{public},SELECT,(is_active = true)
+public,dealt_joy_videos,Admins can manage videos,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM user_roles
+  WHERE ((user_roles.user_id = auth.uid()) AND (user_roles.role = 'admin'::app_role))))"
+public,dealt_joy_videos,Anyone can view active videos,PERMISSIVE,{public},SELECT,(is_active = true)
+public,device_tokens,Admins can view all tokens,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,device_tokens,Users can delete their own tokens,PERMISSIVE,{public},DELETE,(auth.uid() = user_id)
+public,device_tokens,Users can insert their own tokens,PERMISSIVE,{public},INSERT,
+public,device_tokens,Users can update their own tokens,PERMISSIVE,{public},UPDATE,(auth.uid() = user_id)
+public,device_tokens,Users can view their own tokens,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,event_approvers,Admins can manage event approvers,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_approvers,Anyone can view event approvers,PERMISSIVE,{public},SELECT,true
+public,event_approvers,Event approvers can view their assignments,PERMISSIVE,{public},SELECT,(auth.uid() = approver_user_id)
+public,event_day_of_agenda,Admins can manage agenda,PERMISSIVE,{authenticated},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_day_of_agenda,Signed-up volunteers can view agenda,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM event_signups
+  WHERE ((event_signups.event_id = event_day_of_agenda.event_id) AND (event_signups.user_id = auth.uid()) AND (event_signups.status = 'confirmed'::signup_status))))"
+public,event_day_of_contacts,Admins can manage contacts,PERMISSIVE,{authenticated},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_day_of_contacts,Signed-up volunteers can view contacts,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM event_signups
+  WHERE ((event_signups.event_id = event_day_of_contacts.event_id) AND (event_signups.user_id = auth.uid()) AND (event_signups.status = 'confirmed'::signup_status))))"
+public,event_day_of_incidents,Admins can manage incidents,PERMISSIVE,{authenticated},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_day_of_incidents,Signed-up volunteers can view incidents,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM event_signups
+  WHERE ((event_signups.event_id = event_day_of_incidents.event_id) AND (event_signups.user_id = auth.uid()) AND (event_signups.status = 'confirmed'::signup_status))))"
+public,event_day_of_media,Admins can manage media,PERMISSIVE,{authenticated},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_day_of_media,Signed-up volunteers can view media,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM event_signups
+  WHERE ((event_signups.event_id = event_day_of_media.event_id) AND (event_signups.user_id = auth.uid()) AND (event_signups.status = 'confirmed'::signup_status))))"
+public,event_day_of_messages,Admins can manage day-of messages,PERMISSIVE,{authenticated},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_day_of_messages,Volunteers can send messages,PERMISSIVE,{authenticated},INSERT,
+public,event_day_of_messages,Volunteers can view group messages for their events,PERMISSIVE,{authenticated},SELECT,"((is_group = true) AND (EXISTS ( SELECT 1
+   FROM event_signups
+  WHERE ((event_signups.event_id = event_day_of_messages.event_id) AND (event_signups.user_id = auth.uid()) AND (event_signups.status = 'confirmed'::signup_status)))))"
+public,event_day_of_messages,Volunteers can view their own DMs,PERMISSIVE,{authenticated},SELECT,((is_group = false) AND ((sender_id = (auth.uid())::text) OR (recipient_id = auth.uid())))
+public,event_links,Admins can manage event links,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_links,Anyone can view event links,PERMISSIVE,{public},SELECT,true
+public,event_photo_tags,Admins can manage all photo tags,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_photo_tags,Anyone can view photo tags for approved photos,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_photos ep
+  WHERE ((ep.id = event_photo_tags.photo_id) AND (ep.approved = true))))"
+public,event_photo_tags,Photo owners can delete tags on their photos,PERMISSIVE,{public},DELETE,"(EXISTS ( SELECT 1
+   FROM event_photos ep
+  WHERE ((ep.id = event_photo_tags.photo_id) AND (ep.uploaded_by = auth.uid()))))"
+public,event_photo_tags,Photo uploaders can tag users,PERMISSIVE,{public},INSERT,
+public,event_photo_tags,Taggers can remove their own tags,PERMISSIVE,{public},DELETE,(tagged_by = auth.uid())
+public,event_photo_tags,Users can view photos they are tagged in,PERMISSIVE,{public},SELECT,(tagged_user_id = auth.uid())
+public,event_photo_tags,Users can view tags on their own photos,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_photos ep
+  WHERE ((ep.id = event_photo_tags.photo_id) AND (ep.uploaded_by = auth.uid()))))"
+public,event_photos,Admins can manage event photos,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_photos,Admins can view all event photos,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_photos,Anyone can view approved event photos,PERMISSIVE,{public},SELECT,(approved = true)
+public,event_photos,Confirmed volunteers can upload photos,PERMISSIVE,{public},INSERT,
+public,event_photos,Users can delete their own photos,PERMISSIVE,{public},DELETE,(auth.uid() = uploaded_by)
+public,event_photos,Users can view their own photos,PERMISSIVE,{public},SELECT,(auth.uid() = uploaded_by)
+public,event_question_responses,Admins can view all responses,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_question_responses,Event approvers can view responses for their events,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM (event_signups es
+     JOIN event_approvers ea ON ((ea.event_id = es.event_id)))
+  WHERE ((es.id = event_question_responses.signup_id) AND (ea.approver_user_id = auth.uid()))))"
+public,event_question_responses,Users can create their own responses,PERMISSIVE,{public},INSERT,
+public,event_question_responses,Users can view their own responses,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_signups es
+  WHERE ((es.id = event_question_responses.signup_id) AND (es.user_id = auth.uid()))))"
+public,event_questions,Admins can manage event questions,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_questions,Anyone can view event questions,PERMISSIVE,{public},SELECT,true
+public,event_signups,Admins can manage all signups,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_signups,Admins can view all signups,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_signups,Event approvers can update signups for their events,PERMISSIVE,{public},UPDATE,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.approver_user_id = auth.uid()) AND (ea.event_id = event_signups.event_id))))"
+public,event_signups,Event approvers can view signups for their events,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.approver_user_id = auth.uid()) AND (ea.event_id = event_signups.event_id))))"
+public,event_signups,Users can create their own signups,PERMISSIVE,{public},INSERT,
+public,event_signups,Users can delete their own signups,PERMISSIVE,{public},DELETE,(auth.uid() = user_id)
+public,event_signups,Users can update their own signups,PERMISSIVE,{public},UPDATE,(auth.uid() = user_id)
+public,event_signups,Users can view their own signups,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,event_submissions,Admins can manage all submissions,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,event_submissions,Users can create submissions,PERMISSIVE,{public},INSERT,
+public,event_submissions,Users can update their own pending submissions,PERMISSIVE,{public},UPDATE,"((auth.uid() = submitted_by) AND (status = ANY (ARRAY['pending'::submission_status, 'needs_changes'::submission_status])))"
+public,event_submissions,Users can view their own submissions,PERMISSIVE,{public},SELECT,(auth.uid() = submitted_by)
+public,events,Admins can manage events,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,events,Anyone can view events,PERMISSIVE,{public},SELECT,true
+public,feedback_extensions,Admins can view all extensions,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,feedback_extensions,Users can create their own extensions,PERMISSIVE,{public},INSERT,
+public,feedback_extensions,Users can view their own extensions,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,feedback_notification_tracking,Admins can view feedback tracking,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,friends,Admins can manage all friends,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,friends,Users can delete their own requests or unfriend,PERMISSIVE,{public},DELETE,((auth.uid() = requester_id) OR (auth.uid() = addressee_id))
+public,friends,Users can send friend requests,PERMISSIVE,{public},INSERT,
+public,friends,Users can update requests addressed to them,PERMISSIVE,{public},UPDATE,(auth.uid() = addressee_id)
+public,friends,Users can view their own friend requests,PERMISSIVE,{public},SELECT,((auth.uid() = requester_id) OR (auth.uid() = addressee_id))
+public,notifications,Admins can manage all notifications,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,notifications,Users can create their own notifications,PERMISSIVE,{public},INSERT,
+public,notifications,Users can delete their own notifications,PERMISSIVE,{public},DELETE,(auth.uid() = user_id)
+public,notifications,Users can update their own notifications,PERMISSIVE,{public},UPDATE,(auth.uid() = user_id)
+public,notifications,Users can view their own notifications,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,org_volunteer_conversations,Admin users can view org conversations via header,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM admin_users au
+  WHERE (((au.id)::text = ((current_setting('request.headers'::text, true))::json ->> 'x-admin-id'::text)) AND (au.organization_id = org_volunteer_conversations.organization_id))))"
+public,org_volunteer_conversations,Admins can view org conversations,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,org_volunteer_conversations,Volunteers can create org conversations,PERMISSIVE,{public},INSERT,
+public,org_volunteer_conversations,Volunteers can update their own org conversations,PERMISSIVE,{public},UPDATE,(auth.uid() = volunteer_id)
+public,org_volunteer_conversations,Volunteers can view their own org conversations,PERMISSIVE,{public},SELECT,(auth.uid() = volunteer_id)
+public,org_volunteer_messages,Admin users can manage messages via header,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM (org_volunteer_conversations c
+     JOIN admin_users au ON ((au.organization_id = c.organization_id)))
+  WHERE ((c.id = org_volunteer_messages.conversation_id) AND ((au.id)::text = ((current_setting('request.headers'::text, true))::json ->> 'x-admin-id'::text)))))"
+public,org_volunteer_messages,Admins can view messages in their org conversations,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,org_volunteer_messages,Volunteers can send messages,PERMISSIVE,{public},INSERT,
+public,org_volunteer_messages,Volunteers can view messages in their conversations,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM org_volunteer_conversations c
+  WHERE ((c.id = org_volunteer_messages.conversation_id) AND (c.volunteer_id = auth.uid()))))"
+public,organization_event_photos,Admins can manage organization event photos,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,organization_event_photos,Anyone can view organization event photos,PERMISSIVE,{public},SELECT,true
+public,organization_follows,Admins can view all organization follows,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,organization_follows,Users can follow organizations,PERMISSIVE,{public},INSERT,
+public,organization_follows,Users can unfollow organizations,PERMISSIVE,{public},DELETE,(auth.uid() = user_id)
+public,organization_follows,Users can update their follow settings,PERMISSIVE,{public},UPDATE,(auth.uid() = user_id)
+public,organization_follows,Users can view their follows,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,organization_news,Admins can manage organization news,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM admin_users au
+  WHERE (((au.id)::text = ((current_setting('request.headers'::text, true))::json ->> 'x-admin-id'::text)) AND (au.is_super_admin = true))))"
+public,organization_news,Anyone can view organization news,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM organizations o
+  WHERE ((o.id = organization_news.organization_id) AND (o.is_active = true))))"
+public,organizations,Admins can manage organizations,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM admin_users au
+  WHERE (((au.id)::text = ((current_setting('request.headers'::text, true))::json ->> 'x-admin-id'::text)) AND (au.is_super_admin = true))))"
+public,organizations,Anyone can view active organizations,PERMISSIVE,{public},SELECT,(is_active = true)
+public,organizations,Authenticated users can view organizations,PERMISSIVE,{authenticated},SELECT,(is_active = true)
+public,post_event_reviews,Admins can manage all reviews,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,post_event_reviews,Event approvers can manage reviews for their events,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.event_id = post_event_reviews.event_id) AND (ea.approver_user_id = auth.uid()))))"
+public,post_event_reviews,Volunteers can view their own reviews,PERMISSIVE,{public},SELECT,(auth.uid() = volunteer_id)
+public,profiles,Admins can update profiles,PERMISSIVE,{public},UPDATE,"has_role(auth.uid(), 'admin'::app_role)"
+public,profiles,Admins can view all profiles,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,profiles,Authenticated users can view profiles of connections,PERMISSIVE,{authenticated},SELECT,"((auth.uid() IS NOT NULL) AND ((EXISTS ( SELECT 1
+   FROM friends f
+  WHERE ((f.status = 'accepted'::text) AND (((f.requester_id = auth.uid()) AND (f.addressee_id = profiles.id)) OR ((f.addressee_id = auth.uid()) AND (f.requester_id = profiles.id)))))) OR (EXISTS ( SELECT 1
+   FROM user_follows uf
+  WHERE ((uf.follower_id = auth.uid()) AND (uf.following_id = profiles.id)))) OR (EXISTS ( SELECT 1
+   FROM (event_signups es1
+     JOIN event_signups es2 ON ((es1.event_id = es2.event_id)))
+  WHERE ((es1.user_id = auth.uid()) AND (es2.user_id = profiles.id))))))"
+public,profiles,Event approvers can view participant profiles,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM (event_signups es
+     JOIN event_approvers ea ON ((ea.event_id = es.event_id)))
+  WHERE ((ea.approver_user_id = auth.uid()) AND (es.user_id = profiles.id))))"
+public,profiles,Users can insert their own profile,PERMISSIVE,{public},INSERT,
+public,profiles,Users can update their own profile,PERMISSIVE,{public},UPDATE,(auth.uid() = id)
+public,profiles,Users can view their own profile,PERMISSIVE,{public},SELECT,(auth.uid() = id)
+public,redemption_messages,Admins can read all redemption messages,PERMISSIVE,{authenticated},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,redemption_messages,Admins can send redemption messages,PERMISSIVE,{authenticated},INSERT,
+public,redemption_messages,Users can read their redemption messages,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM redemptions r
+  WHERE ((r.id = redemption_messages.redemption_id) AND (r.user_id = auth.uid()))))"
+public,redemption_messages,Users can send messages on their redemptions,PERMISSIVE,{authenticated},INSERT,
+public,redemptions,Admins can manage all redemptions,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,redemptions,Users can create redemptions,PERMISSIVE,{public},INSERT,
+public,redemptions,Users can view their own redemptions,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,shop_items,Admins can manage shop items,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,shop_items,Anyone can view active shop items,PERMISSIVE,{public},SELECT,(active = true)
+public,time_logs,Admins can manage all time logs,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,time_logs,Admins can view all time logs,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,time_logs,Event approvers can update logs for their events,PERMISSIVE,{public},UPDATE,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.approver_user_id = auth.uid()) AND (ea.event_id = time_logs.event_id))))"
+public,time_logs,Event approvers can view logs for their events,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.approver_user_id = auth.uid()) AND (ea.event_id = time_logs.event_id))))"
+public,time_logs,Users can create their own time logs,PERMISSIVE,{public},INSERT,
+public,time_logs,Users can view their own time logs,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,user_badges,Admins can manage user badges,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,user_badges,Users can view their own badges,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,user_follows,Admins can view all follows,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,user_follows,Users can follow others,PERMISSIVE,{public},INSERT,
+public,user_follows,Users can unfollow,PERMISSIVE,{public},DELETE,(auth.uid() = follower_id)
+public,user_follows,Users can view their follows,PERMISSIVE,{public},SELECT,((auth.uid() = follower_id) OR (auth.uid() = following_id))
+public,user_roles,Admins can manage all roles,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,user_roles,Users can view their own roles,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,user_waivers,Admins can view all waiver acceptances,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,user_waivers,Users can accept waivers,PERMISSIVE,{public},INSERT,
+public,user_waivers,Users can view their own waiver acceptances,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,volunteer_conversation_participants,Participants can view conversation members,PERMISSIVE,{authenticated},SELECT,"((user_id = auth.uid()) OR is_conversation_participant(conversation_id, auth.uid()))"
+public,volunteer_conversation_participants,Users can add participants to their conversations,PERMISSIVE,{public},INSERT,
+public,volunteer_conversation_participants,Users can update their own participant record,PERMISSIVE,{public},UPDATE,(user_id = auth.uid())
+public,volunteer_conversations,Participants can update conversation,PERMISSIVE,{public},UPDATE,"(EXISTS ( SELECT 1
+   FROM volunteer_conversation_participants
+  WHERE ((volunteer_conversation_participants.conversation_id = volunteer_conversations.id) AND (volunteer_conversation_participants.user_id = auth.uid()))))"
+public,volunteer_conversations,Users can create conversations,PERMISSIVE,{public},INSERT,
+public,volunteer_conversations,Users can view their conversations,PERMISSIVE,{public},SELECT,"((created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM volunteer_conversation_participants
+  WHERE ((volunteer_conversation_participants.conversation_id = volunteer_conversations.id) AND (volunteer_conversation_participants.user_id = auth.uid())))))"
+public,volunteer_feedback,Admins can manage all feedback,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,volunteer_feedback,Admins can view all feedback,PERMISSIVE,{public},SELECT,"has_role(auth.uid(), 'admin'::app_role)"
+public,volunteer_feedback,Event approvers can view feedback for their events,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.event_id = volunteer_feedback.event_id) AND (ea.approver_user_id = auth.uid()))))"
+public,volunteer_feedback,Users can create their own feedback,PERMISSIVE,{public},INSERT,
+public,volunteer_feedback,Users can update their own feedback,PERMISSIVE,{public},UPDATE,(auth.uid() = user_id)
+public,volunteer_feedback,Users can view their own feedback,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)
+public,volunteer_messages,Participants can send messages,PERMISSIVE,{public},INSERT,
+public,volunteer_messages,Participants can view messages,PERMISSIVE,{public},SELECT,"(EXISTS ( SELECT 1
+   FROM volunteer_conversation_participants
+  WHERE ((volunteer_conversation_participants.conversation_id = volunteer_messages.conversation_id) AND (volunteer_conversation_participants.user_id = auth.uid()))))"
+public,volunteer_ratings,Admins can manage all ratings,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,volunteer_ratings,Event approvers can manage ratings for their events,PERMISSIVE,{public},ALL,"(EXISTS ( SELECT 1
+   FROM event_approvers ea
+  WHERE ((ea.event_id = volunteer_ratings.event_id) AND (ea.approver_user_id = auth.uid()))))"
+public,volunteer_ratings,Users can view their own ratings,PERMISSIVE,{public},SELECT,(auth.uid() = volunteer_id)
+public,waivers,Admins can manage waivers,PERMISSIVE,{public},ALL,"has_role(auth.uid(), 'admin'::app_role)"
+public,waivers,Anyone can view active waivers,PERMISSIVE,{public},SELECT,(active = true)
+public,wishlist,Users can add to their wishlist,PERMISSIVE,{public},INSERT,
+public,wishlist,Users can remove from their wishlist,PERMISSIVE,{public},DELETE,(auth.uid() = user_id)
+public,wishlist,Users can view their own wishlist,PERMISSIVE,{public},SELECT,(auth.uid() = user_id)

@@ -1,0 +1,518 @@
+table_name,column_name,data_type,is_nullable,column_default
+admin_announcement_reads,id,uuid,NO,gen_random_uuid()
+admin_announcement_reads,announcement_id,uuid,NO,
+admin_announcement_reads,admin_user_id,uuid,NO,
+admin_announcement_reads,read_at,timestamp with time zone,NO,now()
+admin_announcements,id,uuid,NO,gen_random_uuid()
+admin_announcements,sender_id,uuid,NO,
+admin_announcements,title,text,NO,
+admin_announcements,message,text,NO,
+admin_announcements,created_at,timestamp with time zone,NO,now()
+admin_conversation_messages,id,uuid,NO,gen_random_uuid()
+admin_conversation_messages,conversation_id,uuid,NO,
+admin_conversation_messages,sender_id,uuid,NO,
+admin_conversation_messages,message,text,NO,
+admin_conversation_messages,read,boolean,YES,false
+admin_conversation_messages,created_at,timestamp with time zone,NO,now()
+admin_conversations,id,uuid,NO,gen_random_uuid()
+admin_conversations,participant_one,uuid,NO,
+admin_conversations,participant_two,uuid,NO,
+admin_conversations,last_message_at,timestamp with time zone,YES,now()
+admin_conversations,created_at,timestamp with time zone,NO,now()
+admin_invites,id,uuid,NO,gen_random_uuid()
+admin_invites,email,text,NO,
+admin_invites,role,USER-DEFINED,NO,
+admin_invites,invited_by,uuid,NO,
+admin_invites,token,text,NO,"encode(extensions.gen_random_bytes(32), 'hex'::text)"
+admin_invites,accepted,boolean,YES,false
+admin_invites,accepted_at,timestamp with time zone,YES,
+admin_invites,expires_at,timestamp with time zone,YES,(now() + '7 days'::interval)
+admin_invites,created_at,timestamp with time zone,YES,now()
+admin_sessions,id,uuid,NO,gen_random_uuid()
+admin_sessions,admin_id,uuid,NO,
+admin_sessions,session_token,text,NO,
+admin_sessions,expires_at,timestamp with time zone,NO,
+admin_sessions,created_at,timestamp with time zone,NO,now()
+admin_users,id,uuid,NO,gen_random_uuid()
+admin_users,email,text,NO,
+admin_users,password_hash,text,NO,
+admin_users,full_name,text,NO,
+admin_users,is_active,boolean,NO,true
+admin_users,last_login_at,timestamp with time zone,YES,
+admin_users,created_at,timestamp with time zone,NO,now()
+admin_users,updated_at,timestamp with time zone,NO,now()
+admin_users,is_super_admin,boolean,NO,false
+admin_users,can_manage_all_events,boolean,NO,false
+admin_users,is_approved,boolean,YES,false
+admin_users,approved_by,uuid,YES,
+admin_users,approved_at,timestamp with time zone,YES,
+admin_users,organization_name,text,YES,
+admin_users,position,text,YES,
+admin_users,organization_id,uuid,YES,
+admin_users,ein,text,YES,
+admin_users,avatar_url,text,YES,
+admin_users,username,text,YES,
+admin_users,events_per_month,text,YES,
+admin_users,app_purpose,text,YES,
+badges,id,uuid,NO,gen_random_uuid()
+badges,name,text,NO,
+badges,description,text,YES,
+badges,icon,text,YES,
+badges,points_required,integer,YES,0
+badges,created_at,timestamp with time zone,YES,now()
+challenge_pokes,id,uuid,NO,gen_random_uuid()
+challenge_pokes,challenge_id,uuid,NO,
+challenge_pokes,sender_id,uuid,NO,
+challenge_pokes,receiver_id,uuid,NO,
+challenge_pokes,poke_type,text,NO,
+challenge_pokes,created_at,timestamp with time zone,NO,now()
+challenges,id,uuid,NO,gen_random_uuid()
+challenges,challenger_id,uuid,NO,
+challenges,challenged_id,uuid,NO,
+challenges,challenge_type,USER-DEFINED,NO,'monthly'::challenge_type
+challenges,status,USER-DEFINED,NO,'pending'::challenge_status
+challenges,start_date,timestamp with time zone,YES,
+challenges,end_date,timestamp with time zone,YES,
+challenges,challenger_points,integer,NO,0
+challenges,challenged_points,integer,NO,0
+challenges,created_at,timestamp with time zone,NO,now()
+challenges,updated_at,timestamp with time zone,NO,now()
+client_partner_photos,id,uuid,NO,gen_random_uuid()
+client_partner_photos,client_partner_id,uuid,NO,
+client_partner_photos,photo_url,text,NO,
+client_partner_photos,display_order,integer,YES,0
+client_partner_photos,created_at,timestamp with time zone,YES,now()
+client_partner_photos,updated_at,timestamp with time zone,YES,now()
+client_partners,id,uuid,NO,gen_random_uuid()
+client_partners,name,text,NO,
+client_partners,foundation,text,NO,
+client_partners,description,text,YES,
+client_partners,sport,text,YES,
+client_partners,team,text,YES,
+client_partners,website,text,YES,
+client_partners,donate_url,text,YES,
+client_partners,mission,text,YES,
+client_partners,image_url,text,YES,
+client_partners,logo_url,text,YES,
+client_partners,initials,text,YES,
+client_partners,color,text,YES,'from-primary to-primary'::text
+client_partners,display_order,integer,YES,0
+client_partners,is_active,boolean,YES,true
+client_partners,show_on_homepage,boolean,YES,false
+client_partners,created_at,timestamp with time zone,NO,now()
+client_partners,updated_at,timestamp with time zone,NO,now()
+client_partners,organization_id,uuid,YES,
+dealt_joy_videos,id,uuid,NO,gen_random_uuid()
+dealt_joy_videos,title,text,NO,
+dealt_joy_videos,summary,text,YES,
+dealt_joy_videos,video_url,text,NO,
+dealt_joy_videos,thumbnail_url,text,YES,
+dealt_joy_videos,display_order,integer,YES,0
+dealt_joy_videos,is_featured,boolean,YES,false
+dealt_joy_videos,is_active,boolean,YES,true
+dealt_joy_videos,created_at,timestamp with time zone,NO,now()
+dealt_joy_videos,updated_at,timestamp with time zone,NO,now()
+device_tokens,id,uuid,NO,gen_random_uuid()
+device_tokens,user_id,uuid,NO,
+device_tokens,token,text,NO,
+device_tokens,platform,text,NO,
+device_tokens,device_id,text,YES,
+device_tokens,created_at,timestamp with time zone,NO,now()
+device_tokens,updated_at,timestamp with time zone,NO,now()
+event_approvers,id,uuid,NO,gen_random_uuid()
+event_approvers,event_id,uuid,NO,
+event_approvers,approver_user_id,uuid,NO,
+event_approvers,created_at,timestamp with time zone,YES,now()
+event_day_of_agenda,id,uuid,NO,gen_random_uuid()
+event_day_of_agenda,event_id,uuid,NO,
+event_day_of_agenda,title,text,NO,
+event_day_of_agenda,description,text,YES,
+event_day_of_agenda,item_type,text,NO,'agenda'::text
+event_day_of_agenda,start_time,time without time zone,YES,
+event_day_of_agenda,end_time,time without time zone,YES,
+event_day_of_agenda,location_note,text,YES,
+event_day_of_agenda,display_order,integer,NO,0
+event_day_of_agenda,created_at,timestamp with time zone,NO,now()
+event_day_of_agenda,updated_at,timestamp with time zone,NO,now()
+event_day_of_contacts,id,uuid,NO,gen_random_uuid()
+event_day_of_contacts,event_id,uuid,NO,
+event_day_of_contacts,name,text,NO,
+event_day_of_contacts,role,text,NO,
+event_day_of_contacts,phone,text,YES,
+event_day_of_contacts,email,text,YES,
+event_day_of_contacts,notes,text,YES,
+event_day_of_contacts,display_order,integer,NO,0
+event_day_of_contacts,created_at,timestamp with time zone,NO,now()
+event_day_of_incidents,id,uuid,NO,gen_random_uuid()
+event_day_of_incidents,event_id,uuid,NO,
+event_day_of_incidents,reported_by,text,NO,
+event_day_of_incidents,incident_type,text,NO,
+event_day_of_incidents,severity,text,NO,'low'::text
+event_day_of_incidents,description,text,NO,
+event_day_of_incidents,involved_parties,text,YES,
+event_day_of_incidents,witnesses,text,YES,
+event_day_of_incidents,photo_url,text,YES,
+event_day_of_incidents,follow_up_actions,text,YES,
+event_day_of_incidents,status,text,NO,'reported'::text
+event_day_of_incidents,occurred_at,timestamp with time zone,NO,now()
+event_day_of_incidents,created_at,timestamp with time zone,NO,now()
+event_day_of_incidents,updated_at,timestamp with time zone,NO,now()
+event_day_of_media,id,uuid,NO,gen_random_uuid()
+event_day_of_media,event_id,uuid,NO,
+event_day_of_media,title,text,NO,
+event_day_of_media,description,text,YES,
+event_day_of_media,media_url,text,NO,
+event_day_of_media,media_type,text,NO,'document'::text
+event_day_of_media,display_order,integer,NO,0
+event_day_of_media,created_at,timestamp with time zone,NO,now()
+event_day_of_messages,id,uuid,NO,gen_random_uuid()
+event_day_of_messages,event_id,uuid,NO,
+event_day_of_messages,sender_id,text,NO,
+event_day_of_messages,sender_type,text,NO,'volunteer'::text
+event_day_of_messages,sender_name,text,NO,
+event_day_of_messages,recipient_id,uuid,YES,
+event_day_of_messages,message,text,NO,
+event_day_of_messages,is_group,boolean,NO,true
+event_day_of_messages,created_at,timestamp with time zone,NO,now()
+event_links,id,uuid,NO,gen_random_uuid()
+event_links,event_id,uuid,NO,
+event_links,label,text,NO,
+event_links,url,text,NO,
+event_links,display_order,integer,NO,0
+event_links,created_at,timestamp with time zone,NO,now()
+event_links,updated_at,timestamp with time zone,NO,now()
+event_photo_tags,id,uuid,NO,gen_random_uuid()
+event_photo_tags,photo_id,uuid,NO,
+event_photo_tags,tagged_user_id,uuid,NO,
+event_photo_tags,tagged_by,uuid,NO,
+event_photo_tags,created_at,timestamp with time zone,NO,now()
+event_photos,id,uuid,NO,gen_random_uuid()
+event_photos,event_id,uuid,NO,
+event_photos,uploaded_by,uuid,NO,
+event_photos,photo_url,text,NO,
+event_photos,caption,text,YES,
+event_photos,created_at,timestamp with time zone,NO,now()
+event_photos,approved,boolean,YES,false
+event_photos,approved_by,uuid,YES,
+event_photos,approved_at,timestamp with time zone,YES,
+event_question_responses,id,uuid,NO,gen_random_uuid()
+event_question_responses,signup_id,uuid,NO,
+event_question_responses,question_id,uuid,NO,
+event_question_responses,response_text,text,YES,
+event_question_responses,response_boolean,boolean,YES,
+event_question_responses,created_at,timestamp with time zone,NO,now()
+event_questions,id,uuid,NO,gen_random_uuid()
+event_questions,event_id,uuid,YES,
+event_questions,question_text,text,NO,
+event_questions,question_type,text,NO,'text'::text
+event_questions,is_generic,boolean,NO,false
+event_questions,is_required,boolean,NO,true
+event_questions,display_order,integer,NO,0
+event_questions,created_at,timestamp with time zone,NO,now()
+event_signups,id,uuid,NO,gen_random_uuid()
+event_signups,user_id,uuid,NO,
+event_signups,event_id,uuid,NO,
+event_signups,status,USER-DEFINED,YES,'confirmed'::signup_status
+event_signups,signup_time,timestamp with time zone,YES,now()
+event_signups,check_in_time,timestamp with time zone,YES,
+event_signups,check_out_time,timestamp with time zone,YES,
+event_signups,check_in_code,text,YES,
+event_signups,is_lead,boolean,YES,false
+event_signups,assigned_station,text,YES,
+event_signups,assigned_role,text,YES,
+event_submissions,id,uuid,NO,gen_random_uuid()
+event_submissions,submitted_by,uuid,NO,
+event_submissions,title,text,NO,
+event_submissions,description,text,YES,
+event_submissions,proposed_date,timestamp with time zone,YES,
+event_submissions,proposed_end_date,timestamp with time zone,YES,
+event_submissions,city,text,YES,
+event_submissions,state,text,YES,
+event_submissions,venue,text,YES,
+event_submissions,address,text,YES,
+event_submissions,capacity,integer,YES,
+event_submissions,signup_mode,USER-DEFINED,YES,'instant'::signup_mode
+event_submissions,suggested_approver_name,text,YES,
+event_submissions,suggested_approver_email,text,YES,
+event_submissions,notes,text,YES,
+event_submissions,status,USER-DEFINED,YES,'pending'::submission_status
+event_submissions,admin_notes,text,YES,
+event_submissions,reviewed_by,uuid,YES,
+event_submissions,reviewed_at,timestamp with time zone,YES,
+event_submissions,created_event_id,uuid,YES,
+event_submissions,created_at,timestamp with time zone,YES,now()
+event_submissions,updated_at,timestamp with time zone,YES,now()
+events,id,uuid,NO,gen_random_uuid()
+events,title,text,NO,
+events,description,text,YES,
+events,event_type,USER-DEFINED,YES,'other'::event_type
+events,location,text,NO,
+events,location_url,text,YES,
+events,start_time,timestamp with time zone,NO,
+events,end_time,timestamp with time zone,NO,
+events,capacity,integer,YES,
+events,min_age,integer,YES,
+events,skills_needed,ARRAY,YES,
+events,waiver_required,boolean,YES,false
+events,image_url,text,YES,
+events,created_by,uuid,YES,
+events,created_at,timestamp with time zone,YES,now()
+events,updated_at,timestamp with time zone,YES,now()
+events,signup_mode,USER-DEFINED,YES,'instant'::signup_mode
+events,city,text,YES,
+events,state,text,YES,
+events,venue,text,YES,
+events,address,text,YES,
+events,photo_release_required,boolean,YES,false
+events,admin_created_by,uuid,YES,
+events,organization_id,uuid,YES,
+events,review_completed_at,timestamp with time zone,YES,
+events,recap_published_at,timestamp with time zone,YES,
+events,recap_summary,text,YES,
+events,community_benefited,text,YES,
+events,impact_funds_generated,text,YES,
+events,impact_joy_dealt,text,YES,
+events,impact_reach,text,YES,
+feedback_extensions,id,uuid,NO,gen_random_uuid()
+feedback_extensions,user_id,uuid,NO,
+feedback_extensions,event_id,uuid,NO,
+feedback_extensions,signup_id,uuid,NO,
+feedback_extensions,granted_at,timestamp with time zone,NO,now()
+feedback_extensions,new_deadline,timestamp with time zone,NO,
+feedback_extensions,created_at,timestamp with time zone,NO,now()
+feedback_notification_tracking,id,uuid,NO,gen_random_uuid()
+feedback_notification_tracking,signup_id,uuid,NO,
+feedback_notification_tracking,event_id,uuid,NO,
+feedback_notification_tracking,user_id,uuid,NO,
+feedback_notification_tracking,event_end_time,timestamp with time zone,NO,
+feedback_notification_tracking,immediate_sent_at,timestamp with time zone,YES,
+feedback_notification_tracking,morning_sent_at,timestamp with time zone,YES,
+feedback_notification_tracking,final_sent_at,timestamp with time zone,YES,
+feedback_notification_tracking,feedback_submitted,boolean,YES,false
+feedback_notification_tracking,created_at,timestamp with time zone,NO,now()
+friends,id,uuid,NO,gen_random_uuid()
+friends,requester_id,uuid,NO,
+friends,addressee_id,uuid,NO,
+friends,status,text,NO,'pending'::text
+friends,created_at,timestamp with time zone,NO,now()
+friends,updated_at,timestamp with time zone,NO,now()
+leaderboard_profiles,id,uuid,YES,
+leaderboard_profiles,full_name,text,YES,
+leaderboard_profiles,username,text,YES,
+leaderboard_profiles,avatar_url,text,YES,
+leaderboard_profiles,total_points,integer,YES,
+leaderboard_profiles,total_hours,numeric,YES,
+leaderboard_profiles,city,text,YES,
+leaderboard_profiles,is_verified,boolean,YES,
+notifications,id,uuid,NO,gen_random_uuid()
+notifications,user_id,uuid,NO,
+notifications,type,text,NO,
+notifications,title,text,NO,
+notifications,message,text,YES,
+notifications,read,boolean,YES,false
+notifications,data,jsonb,YES,
+notifications,created_at,timestamp with time zone,YES,now()
+org_volunteer_conversations,id,uuid,NO,gen_random_uuid()
+org_volunteer_conversations,organization_id,uuid,NO,
+org_volunteer_conversations,volunteer_id,uuid,NO,
+org_volunteer_conversations,event_id,uuid,YES,
+org_volunteer_conversations,created_at,timestamp with time zone,NO,now()
+org_volunteer_conversations,updated_at,timestamp with time zone,NO,now()
+org_volunteer_messages,id,uuid,NO,gen_random_uuid()
+org_volunteer_messages,conversation_id,uuid,NO,
+org_volunteer_messages,sender_id,text,NO,
+org_volunteer_messages,sender_type,text,NO,'volunteer'::text
+org_volunteer_messages,content,text,NO,
+org_volunteer_messages,created_at,timestamp with time zone,NO,now()
+organization_event_photos,id,uuid,NO,gen_random_uuid()
+organization_event_photos,event_id,uuid,NO,
+organization_event_photos,organization_id,uuid,NO,
+organization_event_photos,photo_url,text,NO,
+organization_event_photos,caption,text,YES,
+organization_event_photos,uploaded_by_admin_id,uuid,NO,
+organization_event_photos,display_order,integer,YES,0
+organization_event_photos,created_at,timestamp with time zone,NO,now()
+organization_follows,id,uuid,NO,gen_random_uuid()
+organization_follows,user_id,uuid,NO,
+organization_follows,organization_id,uuid,NO,
+organization_follows,notify_events,boolean,YES,true
+organization_follows,created_at,timestamp with time zone,NO,now()
+organization_news,id,uuid,NO,gen_random_uuid()
+organization_news,organization_id,uuid,NO,
+organization_news,title,text,NO,
+organization_news,source_name,text,NO,
+organization_news,url,text,NO,
+organization_news,published_at,date,YES,
+organization_news,created_at,timestamp with time zone,NO,now()
+organization_news,image_url,text,YES,
+organizations,id,uuid,NO,gen_random_uuid()
+organizations,name,text,NO,
+organizations,description,text,YES,
+organizations,logo_url,text,YES,
+organizations,website,text,YES,
+organizations,contact_email,text,YES,
+organizations,contact_phone,text,YES,
+organizations,created_at,timestamp with time zone,NO,now()
+organizations,updated_at,timestamp with time zone,NO,now()
+organizations,created_by,uuid,YES,
+organizations,is_active,boolean,NO,true
+organizations,is_verified,boolean,YES,false
+organizations,city,text,YES,
+organizations,state,text,YES,
+organizations,banner_url,text,YES,
+post_event_reviews,id,uuid,NO,gen_random_uuid()
+post_event_reviews,signup_id,uuid,NO,
+post_event_reviews,event_id,uuid,NO,
+post_event_reviews,volunteer_id,uuid,NO,
+post_event_reviews,reviewed_by_admin_id,uuid,YES,
+post_event_reviews,attendance_status,text,NO,
+post_event_reviews,joy_points_awarded,integer,YES,0
+post_event_reviews,best_skills,text,YES,
+post_event_reviews,impact_rating,integer,YES,
+post_event_reviews,reuse_likelihood_rating,integer,YES,
+post_event_reviews,created_at,timestamp with time zone,NO,now()
+post_event_reviews,updated_at,timestamp with time zone,NO,now()
+profiles,id,uuid,NO,
+profiles,full_name,text,NO,
+profiles,email,text,NO,
+profiles,phone,text,YES,
+profiles,city,text,YES,
+profiles,interests,ARRAY,YES,
+profiles,emergency_contact_name,text,YES,
+profiles,emergency_contact_phone,text,YES,
+profiles,terms_accepted,boolean,YES,false
+profiles,total_points,integer,YES,0
+profiles,total_hours,numeric,YES,0
+profiles,created_at,timestamp with time zone,YES,now()
+profiles,updated_at,timestamp with time zone,YES,now()
+profiles,redeemed_points,integer,YES,0
+profiles,username,text,YES,
+profiles,avatar_url,text,YES,
+profiles,date_of_birth,date,YES,
+profiles,has_arrest_record,boolean,YES,false
+profiles,arrest_explanation,text,YES,
+profiles,liability_waiver_accepted,boolean,YES,false
+profiles,liability_waiver_accepted_at,timestamp with time zone,YES,
+profiles,photo_waiver_accepted,boolean,YES,false
+profiles,photo_waiver_accepted_at,timestamp with time zone,YES,
+profiles,username_changed_at,timestamp with time zone,YES,
+profiles,is_verified,boolean,YES,false
+profiles,verification_requested_at,timestamp with time zone,YES,
+redemption_messages,id,uuid,NO,gen_random_uuid()
+redemption_messages,redemption_id,uuid,NO,
+redemption_messages,sender_id,text,NO,
+redemption_messages,sender_type,text,NO,
+redemption_messages,message,text,NO,
+redemption_messages,read,boolean,YES,false
+redemption_messages,created_at,timestamp with time zone,NO,now()
+redemptions,id,uuid,NO,gen_random_uuid()
+redemptions,user_id,uuid,NO,
+redemptions,shop_item_id,uuid,NO,
+redemptions,points_spent,integer,NO,
+redemptions,status,USER-DEFINED,YES,'redeemed'::redemption_status
+redemptions,redeemed_at,timestamp with time zone,YES,now()
+redemptions,fulfilled_at,timestamp with time zone,YES,
+redemptions,used_at,timestamp with time zone,YES,
+redemptions,notes,text,YES,
+redemptions,shipping_name,text,YES,
+redemptions,shipping_email,text,YES,
+redemptions,shipping_address,text,YES,
+redemptions,shipping_city,text,YES,
+redemptions,shipping_state,text,YES,
+redemptions,shipping_zip,text,YES,
+shop_items,id,uuid,NO,gen_random_uuid()
+shop_items,type,USER-DEFINED,NO,
+shop_items,title,text,NO,
+shop_items,description,text,YES,
+shop_items,points_cost,integer,NO,
+shop_items,inventory,integer,YES,
+shop_items,image_url,text,YES,
+shop_items,active,boolean,YES,true
+shop_items,created_at,timestamp with time zone,YES,now()
+shop_items,updated_at,timestamp with time zone,YES,now()
+shop_items,expires_at,timestamp with time zone,YES,
+shop_items,category,text,YES,
+shop_items,delivery_method,text,NO,'shipping'::text
+time_logs,id,uuid,NO,gen_random_uuid()
+time_logs,user_id,uuid,NO,
+time_logs,event_id,uuid,NO,
+time_logs,hours,numeric,NO,
+time_logs,start_time,timestamp with time zone,YES,
+time_logs,end_time,timestamp with time zone,YES,
+time_logs,notes,text,YES,
+time_logs,status,USER-DEFINED,YES,'pending'::time_log_status
+time_logs,submitted_at,timestamp with time zone,YES,now()
+time_logs,approved_by,uuid,YES,
+time_logs,approved_at,timestamp with time zone,YES,
+time_logs,rejection_reason,text,YES,
+user_badges,id,uuid,NO,gen_random_uuid()
+user_badges,user_id,uuid,NO,
+user_badges,badge_id,uuid,NO,
+user_badges,earned_at,timestamp with time zone,YES,now()
+user_follows,id,uuid,NO,gen_random_uuid()
+user_follows,follower_id,uuid,NO,
+user_follows,following_id,uuid,NO,
+user_follows,created_at,timestamp with time zone,NO,now()
+user_roles,id,uuid,NO,gen_random_uuid()
+user_roles,user_id,uuid,NO,
+user_roles,role,USER-DEFINED,NO,'user'::app_role
+user_roles,created_at,timestamp with time zone,YES,now()
+user_waivers,id,uuid,NO,gen_random_uuid()
+user_waivers,user_id,uuid,NO,
+user_waivers,waiver_id,uuid,NO,
+user_waivers,accepted_at,timestamp with time zone,YES,now()
+user_waivers,waiver_version,text,NO,
+volunteer_conversation_participants,id,uuid,NO,gen_random_uuid()
+volunteer_conversation_participants,conversation_id,uuid,NO,
+volunteer_conversation_participants,user_id,uuid,NO,
+volunteer_conversation_participants,joined_at,timestamp with time zone,NO,now()
+volunteer_conversation_participants,last_read_at,timestamp with time zone,YES,now()
+volunteer_conversations,id,uuid,NO,gen_random_uuid()
+volunteer_conversations,name,text,YES,
+volunteer_conversations,is_group,boolean,NO,false
+volunteer_conversations,created_by,uuid,NO,
+volunteer_conversations,created_at,timestamp with time zone,NO,now()
+volunteer_conversations,updated_at,timestamp with time zone,NO,now()
+volunteer_feedback,id,uuid,NO,gen_random_uuid()
+volunteer_feedback,user_id,uuid,NO,
+volunteer_feedback,event_id,uuid,NO,
+volunteer_feedback,signup_id,uuid,NO,
+volunteer_feedback,did_attend,boolean,YES,
+volunteer_feedback,lead_name,text,YES,
+volunteer_feedback,received_clear_instructions,boolean,YES,
+volunteer_feedback,instructions_feedback,text,YES,
+volunteer_feedback,experience_feedback,text,YES,
+volunteer_feedback,volunteer_likelihood_rating,integer,YES,
+volunteer_feedback,joy_spread_rating,integer,YES,
+volunteer_feedback,created_at,timestamp with time zone,NO,now()
+volunteer_feedback,updated_at,timestamp with time zone,NO,now()
+volunteer_feedback,immediate_notification_sent,boolean,YES,false
+volunteer_feedback,morning_notification_sent,boolean,YES,false
+volunteer_feedback,final_notification_sent,boolean,YES,false
+volunteer_messages,id,uuid,NO,gen_random_uuid()
+volunteer_messages,conversation_id,uuid,NO,
+volunteer_messages,sender_id,uuid,NO,
+volunteer_messages,content,text,YES,
+volunteer_messages,message_type,text,NO,'text'::text
+volunteer_messages,shared_event_id,uuid,YES,
+volunteer_messages,shared_photo_url,text,YES,
+volunteer_messages,created_at,timestamp with time zone,NO,now()
+volunteer_ratings,id,uuid,NO,gen_random_uuid()
+volunteer_ratings,volunteer_id,uuid,NO,
+volunteer_ratings,event_id,uuid,NO,
+volunteer_ratings,organization_id,uuid,YES,
+volunteer_ratings,rated_by_admin_id,uuid,YES,
+volunteer_ratings,rating,integer,NO,
+volunteer_ratings,feedback,text,YES,
+volunteer_ratings,created_at,timestamp with time zone,NO,now()
+volunteer_ratings,updated_at,timestamp with time zone,NO,now()
+waivers,id,uuid,NO,gen_random_uuid()
+waivers,type,text,NO,
+waivers,version,text,NO,
+waivers,content,text,NO,
+waivers,created_at,timestamp with time zone,YES,now()
+waivers,active,boolean,YES,true
+wishlist,id,uuid,NO,gen_random_uuid()
+wishlist,user_id,uuid,NO,
+wishlist,shop_item_id,uuid,NO,
+wishlist,created_at,timestamp with time zone,NO,now()
