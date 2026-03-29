@@ -1,4 +1,6 @@
 {
+  "name": "joy-dealer",
+  "slug": "joy-dealer",
   "plugins": [
     "expo-router",
     "expo-web-browser"
